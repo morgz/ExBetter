@@ -41,8 +41,8 @@ defmodule ExBetter.MixProject do
     [
       licenses: ["MIT"],
       links: %{
-        "GitHub" => "https://github.com/morgz/ex_skyscanner",
-        "Changelog" => "https://github.com/morgz/ex_skyscanner/blob/master/CHANGELOG.md"
+        "GitHub" => "https://github.com/morgz/",
+        "Changelog" => "https://github.com/morgz/"
       },
       maintainers: ["Morgz"]
     ]
