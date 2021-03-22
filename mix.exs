@@ -4,10 +4,11 @@ defmodule ExBetter.MixProject do
   def project do
     [
       app: :ex_better,
-      version: "0.1.0",
+      version: "0.0.1",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
+      description: description(),
       deps: deps(),
       package: package()
     ]
@@ -35,6 +36,12 @@ defmodule ExBetter.MixProject do
       {:hackney, "~> 1.14.0"},
       {:exvcr, "~> 0.10", only: :test}
     ]
+  end
+
+  defp description do
+    """
+    Library for using BETTER API.
+    """
   end
 
   defp package do
