@@ -40,10 +40,10 @@ defmodule ExBetter do
   end
 
   # client = ExBetter.client(:production, "token")
-  # client |> ExBetter.browse_sessions(["db9bd7d1-e741-41f2-9a99-7b4bf85cbfce"], "2021-03-29T13:24:44+0000", "2021-03-30T13:24:44+0000")
+  # client |> ExBetter.sessions(["db9bd7d1-e741-41f2-9a99-7b4bf85cbfce"], "2021-03-29T13:24:44+0000", "2021-03-30T13:24:44+0000")
   # {:ok, _, body} = v
   # body |> Keyword.fetch!(:body)
-  @spec browse_sessions(
+  @spec sessions(
           Tesla.Client.t(),
           nonempty_maybe_improper_list,
           any,
@@ -61,7 +61,7 @@ defmodule ExBetter do
                | {:url, binary},
                ...
              ]}
-  def browse_sessions(
+  def sessions(
     client,
     [_|_] = location_ids,
     date_from,
@@ -96,7 +96,6 @@ defmodule ExBetter do
           {:ok, [{:url, url}, {:status, status}, {:method, method}, {:body, body}]}
         {:ok, %Tesla.Env{body: body}} ->
           {:error, body}
-
         {:error, _} = other ->
           other
       end
@@ -105,8 +104,8 @@ defmodule ExBetter do
 
 
 # client = ExBetter.client(:production, "token")
-# client |> ExBetter.get_session("ae87621e-9865-4347-acc9-f98c1e49afa2")
-  def get_session(client, session_id) do
+# client |> ExBetter.session("ae87621e-9865-4347-acc9-f98c1e49afa2")
+  def session(client, session_id) do
     url =
       "sessions"
       |> append_path_parameter(session_id)
