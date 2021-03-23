@@ -102,7 +102,6 @@ defmodule ExBetter do
     end
 
 
-
 # client = ExBetter.client(:production, "token")
 # client |> ExBetter.session("ae87621e-9865-4347-acc9-f98c1e49afa2")
   def session(client, session_id) do
@@ -118,6 +117,23 @@ defmodule ExBetter do
       {:ok, %Tesla.Env{body: body}} ->
         {:error, body}
 
+      {:error, _} = other ->
+        other
+    end
+  end
+
+  # client |> ExBetter.reservation("54437531-5c48-4434-ab4d-2d1e13c9b2c1")
+  def reservation(client, reservation_id) do
+    url =
+      "contacts/current/reservations"
+      |> append_path_parameter(reservation_id)
+
+    case request(client, method: :get, url: url) do
+      {:ok, %Tesla.Env{status: status, body: body, url: url, method: method}}
+      when status in @success_codes ->
+        {:ok, body, [{:url, url}, {:status, status}, {:method, method}]}
+      {:ok, %Tesla.Env{body: body}} ->
+        {:error, body}
       {:error, _} = other ->
         other
     end
