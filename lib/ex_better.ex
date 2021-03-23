@@ -139,6 +139,7 @@ defmodule ExBetter do
     end
   end
 
+  # client |> ExBetter.create_reservation("6c53d33b-7ff0-4965-a51a-5a332e6ef23d")
   def create_reservation(client, session_id) do
     url = "sessions"
           |> append_path_parameter(session_id)
