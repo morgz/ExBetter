@@ -139,6 +139,27 @@ defmodule ExBetter do
     end
   end
 
+  def create_reservation(client, session_id) do
+    url = "sessions"
+          |> append_path_parameter(session_id)
+          |> append_path_parameter("reservations")
+
+      case request(
+        client,
+        method: :post,
+        url: url,
+        body: %{}
+      ) do
+        {:ok, %Tesla.Env{status: status, url: url, method: method, body: body}}
+        when status in @success_codes ->
+          {:ok, [{:url, url}, {:status, status}, {:method, method}, {:body, body}]}
+        {:ok, %Tesla.Env{body: body}} ->
+          {:error, body}
+        {:error, _} = other ->
+          other
+      end
+  end
+
   def append_path_parameter(url, nil), do: url
 
   def append_path_parameter(url, param) do
