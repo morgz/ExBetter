@@ -161,6 +161,28 @@ defmodule ExBetter do
       end
   end
 
+  # client |> ExBetter.cancel_reservation("40497d86-92e0-4553-ab22-a7032cd0347f")
+  def cancel_reservation(client, reservation_id) do
+    url =
+      "contacts/current/reservations"
+      |> append_path_parameter(reservation_id)
+
+      case request(
+        client,
+        method: :patch,
+        url: url,
+        body: %{"reservationStatus": "Cancelled"}
+      ) do
+        {:ok, %Tesla.Env{status: status, url: url, method: method, body: body}}
+        when status in @success_codes ->
+          {:ok, [{:url, url}, {:status, status}, {:method, method}, {:body, body}]}
+        {:ok, %Tesla.Env{body: body}} ->
+          {:error, body}
+        {:error, _} = other ->
+          other
+      end
+  end
+
   def append_path_parameter(url, nil), do: url
 
   def append_path_parameter(url, param) do
