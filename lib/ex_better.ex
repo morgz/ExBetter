@@ -40,6 +40,24 @@ defmodule ExBetter do
   end
 
   # client = ExBetter.client(:production, "token")
+  # client |> ExBetter.current_user
+  def current_user(client) do
+    url = "contacts/current"
+
+    case request(client, method: :get, url: url) do
+      {:ok, %Tesla.Env{status: status, body: body, url: url, method: method}}
+      when status in @success_codes ->
+        {:ok, body, [{:url, url}, {:status, status}, {:method, method}]}
+
+      {:ok, %Tesla.Env{body: body}} ->
+        {:error, body}
+
+      {:error, _} = other ->
+        other
+    end
+  end
+
+  # client = ExBetter.client(:production, "token")
   # client |> ExBetter.sessions(["db9bd7d1-e741-41f2-9a99-7b4bf85cbfce"], "2021-03-29T13:24:44+0000", "2021-03-30T13:24:44+0000")
   # {:ok, _, body} = v
   # body |> Keyword.fetch!(:body)
