@@ -20,22 +20,22 @@ defmodule ExBetter do
   @success_codes 200..299
 
   def client(url, token, opts \\ [])
-
-  def client(:production, token, opts),
-  do: client("https://publicapi-uk01.legendonlineservices.co.uk/", token, opts)
-
+  def client(:production, token, opts), do: client("https://publicapi-uk01.legendonlineservices.co.uk/", token, opts)
   def client(base_url, token, opts) do
-
     middleware = [
       {Tesla.Middleware.BaseUrl, base_url},
       {Tesla.Middleware.Headers, Keyword.get(opts, :headers, [])},
-      {Tesla.Middleware.Headers, [
-        {"Authorization", "Bearer " <> token },
+      {Tesla.Middleware.Headers,
+      [
         {"User-Agent", @default_user_agent},
         {"Accept-Language", "en-GB;q=1.0"}
-      ]}
+      ] ++ case token do # Maybe add the token if it's provided
+        nil -> []
+        "" -> []
+        token -> [{"Authorization", "Bearer " <> token }]
+      end
+      }
     ]
-
     Tesla.client(middleware)
   end
 
