@@ -61,33 +61,12 @@ defmodule ExBetter do
   # client |> ExBetter.sessions(["db9bd7d1-e741-41f2-9a99-7b4bf85cbfce"], "2021-03-29T13:24:44+0000", "2021-03-30T13:24:44+0000")
   # {:ok, _, body} = v
   # body |> Keyword.fetch!(:body)
-  @spec sessions(
-          Tesla.Client.t(),
-          nonempty_maybe_improper_list,
-          any,
-          any,
-          any,
-          any,
-          any,
-          map
-        ) ::
-          {:error, any}
-          | {:ok, nil | binary,
-             [
-               {:method, :delete | :get | :head | :options | :patch | :post | :put | :trace}
-               | {:status, 1..1_114_111}
-               | {:url, binary},
-               ...
-             ]}
   def sessions(
     client,
     [_|_] = location_ids,
     date_from,
     date_end,
-    until_midnight_in_days \\ 1,
-    page_no \\ 1,
-    page_size \\ 10,
-    opts \\ %{}
+    opts \\ []
   ) do
 
     url = "sessions"
@@ -96,12 +75,9 @@ defmodule ExBetter do
       %{
         locationIds: location_ids,
         dateFrom: date_from,
-        dateEnd: date_end,
-        untilMidnightInDays: until_midnight_in_days,
-        pageNo: page_no,
-        pageSize: page_size
+        dateEnd: date_end
       }
-      |> Map.merge(opts)
+      |> Map.merge(Enum.into(opts, %{}))
 
       case request(
         client,
